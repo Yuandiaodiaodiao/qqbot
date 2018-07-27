@@ -7,11 +7,12 @@
 #include<cstdlib>
 #include<vector>
 #include<future>
-
+/*
 using namespace std;
 using namespace CQ;
-bool debugx = true;
-#define DEBUG(x) if(debugx==true)CQ::sendPrivateMsg(295087430, ((string(x)).c_str()));
+bool debugx = true;//debug模式开关
+long long debugqq = 295087430;//debugqq号
+#define DEBUG(x) if(debugx==true)CQ::sendPrivateMsg(debugqq, ((string(x)).c_str()));
 int calltimes;
 long long qqid;
 class users {
@@ -34,8 +35,8 @@ static int callmax(void *NotUsed, int argc, char **argv, char **azColName) {
 	return 0;
 }
 static int callvoid(void *NotUsed, int argc, char **argv, char **azColName) { return 0; }
-EVE_GroupMsg_EX(Group1) {
-	long long groupid = 248639786;
+EVE_GroupMsg_EX(Group2) {
+	long long groupid = 248639786;//群号码
 	user.clear();
 	int rc;
 	const char* data = "Callback function called";
@@ -90,7 +91,7 @@ EVE_GroupMsg_EX(Group1) {
 			deleteMsg(di);
 			return 8;
 		},mesid);
-		*/
+		
 	}
 	//eve.sendMsg("呵,垃圾");
-}
+}*/

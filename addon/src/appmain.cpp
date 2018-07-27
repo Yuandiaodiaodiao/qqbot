@@ -13,7 +13,7 @@ static Logger logger("酷Q样例应用");
 
 string a = "1";
 sqlite3 * db;
-EVE_Enable(Enable)
+EVE_Enable(Enable2)
 {
 	
 	
@@ -40,7 +40,7 @@ EVE_Enable(Enable)
 	return 0;
 }
 
-EVE_Disable(Disable)
+EVE_Disable(Disable2)
 {
 	logger.Info("应用被停用");
 	CQ::sendPrivateMsg(295087430, "数据库关闭");

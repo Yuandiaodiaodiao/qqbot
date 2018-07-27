@@ -36,6 +36,9 @@
     <ClCompile Include="群聊1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="群聊txt.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\APPINFO.h">
