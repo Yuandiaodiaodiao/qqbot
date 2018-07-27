@@ -6,7 +6,7 @@
   "apiver": 9, // Api版本，本SDK为9
   "name": "稽气人", // 应用名称
   "version": "1.0.1", // 应用版本
-  "version_id": 3, // 应用顺序版本（每次发布时至少+1）
+  "version_id": 6, // 应用顺序版本（每次发布时至少+1）
   "author": "Yuandiaodiaodiao", // 应用作者
   "description": "酷Q样例应用(V9应用机制)", //一句话描述插件用途
   "event": [

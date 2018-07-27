@@ -30,14 +30,18 @@ EVE_Enable(Enable) {
 	if (!f) {
 		f.close();
 		fstream f1("db.txt", ios::out);
+
 		f1.close();
 		f.open("db.txt", ios::in);
 	}
-	while (!f.eof()) {
-		long long id;
-		int times;
-		f >> id >> times;
-		mapp[id] = times;
+	else {
+		while (!f.eof()) {
+			long long id;
+			int times;
+			f >> id >> times;
+			if (times > 999999)continue;
+			mapp[id] = times;
+		}
 	}
 	f.close();
 	DEBUG("start");
@@ -46,9 +50,10 @@ EVE_Enable(Enable) {
 EVE_Disable(Disable)
 {
 	fstream f("db.txt", ios::out);
-	for (auto x : mapp) 	f << x.first << " " << x.second << endl;
+	for (auto x : mapp) 	f << x.first << " " << x.second << "\n";
 	f.close();
 	DEBUG("save");
+	mapp.clear();
 	return 0;
 }
 
@@ -64,7 +69,6 @@ EVE_GroupMsg_EX(Group1) {
 		if (ban[qqid] >= 2) {
 			setGroupBan(groupid, qqid, 60);
 			string nickname= getGroupMemberInfo(groupid,qqid, true).名片;
-
 			string sx = "@" + nickname + "你太吵了 歇一会";
 			sendGroupMsg(groupid,sx);
 			ban[qqid] = 0;
@@ -85,7 +89,5 @@ EVE_GroupMsg_EX(Group1) {
 		}
 		long long mesid = sendGroupMsg(groupid, strs);
 	}
-	fstream f("db.txt", ios::out);
-	for (auto x : mapp) 	f << x.first << " " << x.second << endl;
-	f.close();
+
 }
