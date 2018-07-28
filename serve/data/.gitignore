@@ -6,7 +6,11 @@ image/
 *.lo
 *.o
 *.obj
-
+*.cpk
+*.db
+*.dat
+*.iobj
+*.ipdb
 # Precompiled Headers
 *.gch
 *.pch

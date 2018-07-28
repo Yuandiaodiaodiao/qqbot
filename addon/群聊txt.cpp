@@ -67,6 +67,9 @@ string atinfo = "[CQ:at,qq=1442766687";
 EVE_GroupMsg_EX(Group1) {
 	
 	string msg = eve.message;
+	if ((msg.find("？")!=-1||msg.find("?") != -1)&& rand4(rng) == 3) {
+		sendGroupMsg(eve.fromGroup, msg);
+	}
 	if (msg.find("稽气人设置@信息") != -1) {
 		atinfo = msg.substr(0, 20);
 		DEBUG("设置@信息为" + atinfo);
