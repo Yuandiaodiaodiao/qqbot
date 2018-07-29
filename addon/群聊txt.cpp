@@ -2,7 +2,7 @@
 #include <CQcode.h>
 #include <CQLogger.h>
 #include <CQAPI_EX.h>
-
+#include<Windows.h>
 #include <string>
 #include<cstdlib>
 #include<vector>
@@ -45,13 +45,14 @@ EVE_Enable(Enable) {
 			int times;
 			f >> id >> times;
 			if (times > 999999)continue;
-			mapp[id] = times;
+			mapp.insert(make_pair(id, times));
 		}
 	}
 	f.close();
 	DEBUG("start");
 	return 0;
 }
+
 EVE_Disable(Disable)
 {
 	fstream f("db.txt", ios::out);
@@ -61,12 +62,46 @@ EVE_Disable(Disable)
 	mapp.clear();
 	return 0;
 }
-
-
+class banmoretalk {
+public:long long qqid;
+	   int times;
+	   banmoretalk() { qqid = 0; times = 0; }
+};
+map<long long, string> lastmessage;
+map<long long, banmoretalk>bantalk;
 string atinfo = "[CQ:at,qq=1442766687";
+long long lastmsgid = 0;
+long long getlastmsgid() {
+	return lastmsgid;
+}
 EVE_GroupMsg_EX(Group1) {
-	
+
 	string msg = eve.message;
+	long long fromgroup = eve.fromGroup;
+	long long qqid = eve.fromQQ;
+	long long msgid = eve.msgId;
+	if (fromgroup == 725516089) {
+		lastmsgid = msgid;
+		std::future<int> f1 = std::async(std::launch::async, [](long long di) {
+			DEBUG(string("开始撤回"));
+			Sleep(30 * 1000);
+			long long msgid2=getlastmsgid();
+			if (di == msgid2) {
+				DEBUG("ok");
+				sendGroupMsg(725516089, "你冷群了 辣鸡");
+			}
+
+			return 8;
+		}, lastmsgid);
+		
+	}
+	if (msg == lastmessage[fromgroup])
+	{ eve.sendMsg(msg);
+	lastmessage[fromgroup] = "";
+	}
+	else {
+		lastmessage[fromgroup] = msg;
+	}
 	if ((msg.find("？")!=-1||msg.find("?") != -1)&& rand4(rng) == 3) {
 		sendGroupMsg(eve.fromGroup, msg);
 	}
@@ -89,8 +124,20 @@ EVE_GroupMsg_EX(Group1) {
 		DEBUG("表情");
 	}*/
 	if (eve.fromGroup != groupid)return;
+	if (qqid == bantalk[fromgroup].qqid) {
+		bantalk[fromgroup].times++;
+		if (bantalk[fromgroup].times >= 5) {
+			if (getGroupMemberInfo(groupid, qqid, true).permissions < 2) {
+				setGroupBan(groupid, qqid, 60);
+				eve.sendMsg("检测到过度水群");
+			}
+		}
+	}
+	else {
+		bantalk[fromgroup].qqid = qqid;
+		bantalk[fromgroup].times = 1;
+	}
 	
-	long long qqid = eve.fromQQ;
 	
 	mapp[qqid]++;
 
@@ -129,7 +176,7 @@ EVE_GroupMsg_EX(Group1) {
 		long long mesid = sendGroupMsg(groupid, strs);
 	}
 	if (msg.find(atinfo) != -1&&(msg.find("水")!=-1)&&(msg.find("我") != -1)&& (msg.find("记录")!=-1||msg.find("多少") != -1)) {
-		setGroupBan(groupid, qqid, 120);
+		//setGroupBan(groupid, qqid, 120);
 		sendGroupMsg(groupid, string(to_string(mapp[qqid])+"条").c_str());
 		
 	
