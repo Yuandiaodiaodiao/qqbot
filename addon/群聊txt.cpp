@@ -80,21 +80,7 @@ EVE_GroupMsg_EX(Group1) {
 	long long fromgroup = eve.fromGroup;
 	long long qqid = eve.fromQQ;
 	long long msgid = eve.msgId;
-	if (fromgroup == 725516089) {
-		lastmsgid = msgid;
-		std::future<int> f1 = std::async(std::launch::async, [](long long di) {
-			DEBUG(string("开始撤回"));
-			Sleep(30 * 1000);
-			long long msgid2=getlastmsgid();
-			if (di == msgid2) {
-				DEBUG("ok");
-				sendGroupMsg(725516089, "你冷群了 辣鸡");
-			}
-
-			return 8;
-		}, lastmsgid);
-		
-	}
+	
 	if (msg == lastmessage[fromgroup])
 	{ eve.sendMsg(msg);
 	lastmessage[fromgroup] = "";
@@ -180,6 +166,21 @@ EVE_GroupMsg_EX(Group1) {
 		sendGroupMsg(groupid, string(to_string(mapp[qqid])+"条").c_str());
 		
 	
+	}
+	 {
+		lastmsgid = msgid;
+		std::future<int> f1 = std::async(std::launch::async, [](long long di,long long groupid) {
+			//DEBUG(string("开始撤回"));
+			Sleep(60 * 1000 * 5 + 3);
+			long long msgid2 = getlastmsgid();
+			if (di == msgid2) {
+				DEBUG("ok");
+				sendGroupMsg(groupid, "已经五分钟没人理你了恭喜楼上成为冷群王");
+			}
+
+			return 8;
+		}, lastmsgid,groupid);
+
 	}
 
 }
