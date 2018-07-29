@@ -74,28 +74,46 @@ long long lastmsgid = 0;
 long long getlastmsgid() {
 	return lastmsgid;
 }
-EVE_GroupMsg_EX(Group1) {
 
+EVE_GroupMsg_EX(Group1) {
+	bool fudu = false;
 	string msg = eve.message;
 	long long fromgroup = eve.fromGroup;
 	long long qqid = eve.fromQQ;
 	long long msgid = eve.msgId;
-	
-	if (msg == lastmessage[fromgroup])
+	/*if (fromgroup == 725516089) {
+		lastmsgid = msgid;
+		std::future<int> f1 = std::async(std::launch::async, [](long long di, long long groupid) {
+			//DEBUG(string("开始撤回"));
+			Sleep(60 * 1000 * 5 + 3);
+			long long msgid2 = getlastmsgid();
+			if (di == msgid2) {
+				DEBUG("ok");
+				sendGroupMsg(groupid, "已经五分钟没人理你了恭喜楼上成为冷群王");
+			}
+
+			return 8;
+		}, lastmsgid, 725516089);
+
+	}*/
+	if (msg == lastmessage[fromgroup]&&!fudu)
 	{ eve.sendMsg(msg);
+	fudu = true;
 	lastmessage[fromgroup] = "";
 	}
 	else {
 		lastmessage[fromgroup] = msg;
 	}
-	if ((msg.find("？")!=-1||msg.find("?") != -1)&& rand4(rng) == 3) {
+	if ((msg.find("？")!=-1||msg.find("?") != -1)&& rand4(rng) == 3&&!fudu) {
+		fudu = true;
 		sendGroupMsg(eve.fromGroup, msg);
 	}
 	if (msg.find("稽气人设置@信息") != -1) {
-		atinfo = msg.substr(0, 20);
+		//atinfo = msg.substr(0, 20);
 		DEBUG("设置@信息为" + atinfo);
 	}
-	if (msg.find("嘤") != -1 && rand4(rng) == 3) {
+	if (msg.find("嘤") != -1 && rand4(rng) == 3&&!fudu) {
+		fudu = true;
 		sendGroupMsg(eve.fromGroup, "嘤嘤嘤");
 	}
 	string msg1 = eve.messageRAW;
@@ -167,20 +185,6 @@ EVE_GroupMsg_EX(Group1) {
 		
 	
 	}
-	 {
-		lastmsgid = msgid;
-		std::future<int> f1 = std::async(std::launch::async, [](long long di,long long groupid) {
-			//DEBUG(string("开始撤回"));
-			Sleep(60 * 1000 * 5 + 3);
-			long long msgid2 = getlastmsgid();
-			if (di == msgid2) {
-				DEBUG("ok");
-				sendGroupMsg(groupid, "已经五分钟没人理你了恭喜楼上成为冷群王");
-			}
-
-			return 8;
-		}, lastmsgid,groupid);
-
-	}
+	
 
 }
