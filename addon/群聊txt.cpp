@@ -65,9 +65,12 @@ EVE_Disable(Disable)
 class banmoretalk {
 public:long long qqid;
 	   int times;
-	   banmoretalk() { qqid = 0; times = 0; }
+	   int len;
+	   banmoretalk() { qqid = 0; times = 0; len = 0; }
 };
 map<long long, string> lastmessage;
+map<long long, string> lastmessage2;
+map<long long, long long> lastsendqq;
 map<long long, banmoretalk>bantalk;
 string atinfo = "[CQ:at,qq=1442766687";
 long long lastmsgid = 0;
@@ -96,13 +99,18 @@ EVE_GroupMsg_EX(Group1) {
 		}, lastmsgid, 725516089);
 
 	}*/
-	if (msg == lastmessage[fromgroup]&&!fudu)
+	if (msg.find(atinfo) != -1) {
+		DEBUG("收到@" + msg);
+		DEBUG(eve.messageRAW);
+		fudu = true;
+	}
+	if (msg == lastmessage2[fromgroup]&&!fudu)
 	{ eve.sendMsg(msg);
 	fudu = true;
-	lastmessage[fromgroup] = "";
+	lastmessage2[fromgroup] = "";
 	}
 	else {
-		lastmessage[fromgroup] = msg;
+		lastmessage2[fromgroup] = msg;
 	}
 	if ((msg.find("？")!=-1||msg.find("?") != -1)&& rand4(rng) == 3&&!fudu) {
 		fudu = true;
@@ -117,31 +125,36 @@ EVE_GroupMsg_EX(Group1) {
 		sendGroupMsg(eve.fromGroup, "嘤嘤嘤");
 	}
 	string msg1 = eve.messageRAW;
-	if (msg1.find(atinfo) != -1) {
-		DEBUG("收到@" + msg1);
-		DEBUG(eve.messageRAW);
-	}
+	
 	/*
 	if (rand100(rng) == 60) { 
 		auto msg = eve.sendMsg();
 		msg<<code::image("窥屏.jpg")<<send;
 		DEBUG("表情");
 	}*/
-	if (eve.fromGroup != groupid)return;
+	if (!(eve.fromGroup == groupid||eve.fromGroup== 849690401))return;
 	if (qqid == bantalk[fromgroup].qqid) {
+		if (msg == lastmessage[fromgroup]&& (getGroupMemberInfo(groupid, qqid, true).permissions < 2)) {
+			setGroupBan(groupid, qqid, 60);
+			eve.sendMsg("检测到恶意复读");
+			lastmessage[fromgroup] = "";
+		}
 		bantalk[fromgroup].times++;
-		if (bantalk[fromgroup].times >= 5) {
+		bantalk[fromgroup].len+=msg.length();
+		if (bantalk[fromgroup].times >= 6) {
 			if (getGroupMemberInfo(groupid, qqid, true).permissions < 2) {
 				setGroupBan(groupid, qqid, 60);
 				eve.sendMsg("检测到过度水群");
+				lastmessage[fromgroup] = "";
 			}
 		}
 	}
 	else {
+		bantalk[fromgroup].len = 0;
 		bantalk[fromgroup].qqid = qqid;
 		bantalk[fromgroup].times = 1;
 	}
-	
+	lastmessage[fromgroup] = msg;
 	
 	mapp[qqid]++;
 
@@ -155,12 +168,12 @@ EVE_GroupMsg_EX(Group1) {
 				resmsg="不告诉你";
 			}
 			else {
-				setGroupBan(groupid, qqid, 60);
+				setGroupBan(fromgroup, qqid, 60);
 				resmsg = "就你话多";
 			}
 			string nickname = i.名片;
 			string sx = "@" + nickname + resmsg;
-			sendGroupMsg(groupid,sx);
+			sendGroupMsg(fromgroup,sx);
 			ban[qqid] = 0;
 			return;
 		}
@@ -177,11 +190,11 @@ EVE_GroupMsg_EX(Group1) {
 			que.pop();
 			strs += "\n"+nickname + "  " + to_string(x.speak) + "条";
 		}
-		long long mesid = sendGroupMsg(groupid, strs);
+		long long mesid = sendGroupMsg(fromgroup, strs);
 	}
 	if (msg.find(atinfo) != -1&&(msg.find("水")!=-1)&&(msg.find("我") != -1)&& (msg.find("记录")!=-1||msg.find("多少") != -1)) {
 		//setGroupBan(groupid, qqid, 120);
-		sendGroupMsg(groupid, string(to_string(mapp[qqid])+"条").c_str());
+		sendGroupMsg(fromgroup, string(to_string(mapp[qqid])+"条").c_str());
 		
 	
 	}
