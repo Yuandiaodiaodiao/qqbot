@@ -101,6 +101,8 @@ EVE_GroupMsg_EX(Group1) {
 	}*/
 	if (msg.find(atinfo) != -1) {
 		DEBUG("收到@" + msg);
+		eve.sendMsg("稽气人正在维护");
+		return;
 		DEBUG(eve.messageRAW);
 		fudu = true;
 	}
@@ -156,7 +158,7 @@ EVE_GroupMsg_EX(Group1) {
 	}
 	lastmessage[fromgroup] = msg;
 	
-	mapp[qqid]++;
+	//mapp[qqid]++;
 
 	if ((msg.find("小可爱") != -1) && (msg.find("水群") != -1)) {
 		ban[qqid]++;
