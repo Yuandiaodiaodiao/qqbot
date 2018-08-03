@@ -57,7 +57,7 @@ EVE_GroupMsg_EX(Group) {
 		string sameMsg = "nullx";
 		for (auto x : msglist) {
 			if (sameMsg == "nullx") { sameMsg = x.message; sameQq = x.fromQQ; }
-			if (sameMsg == x.message)times++;
+			if (sameMsg == x.message&&sameQq==x.fromQQ)times++;
 			else break;
 			if (times == 2) {
 				setGroupBan(fromgroup, fromqq, 60);
