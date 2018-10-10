@@ -50,8 +50,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\Program Files\sqlite\sqlite-amalgamation-3240000;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Program Files\sqlite;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile />
@@ -72,7 +72,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@
   "version": "1.0.1", // 应用版本
   "version_id": 1, // 应用顺序版本（每次发布时至少+1）
   "author": "Yuandiaodiaodiao", // 应用作者
-  "description": "水群复读禁言\n 在/app/com.yuan.bantalk下新建 option.ini  写入\n debugqq xxxxx \n grouplist xxxxx \n debug 1 ", //一句话描述插件用途
+  "description": "水群复读禁言", //一句话描述插件用途
   "event": [
     // 事件列表，同一事件类型可重复定义（发布前请删除无用事件）
     {
