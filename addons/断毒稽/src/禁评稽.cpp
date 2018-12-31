@@ -101,11 +101,17 @@ EVE_GroupMsg_EX(Group) {
 			if (times >= 4) {
 				msgStream << code::image("break1.png") << send;
 				msglist.clear();
-				return;
+				break;
 			}
 		}
 	}
 	
+	if ( fromgroup == 933387304||fromgroup==810135023 ) {
+		if (( msg.find('?') != -1 ||msg.find('？')!=-1)&& msg.find("问") != -1 ) {
+			msgStream << "https://www.baidu.com \n百度一分钟解决\n问群里吹两小时牛B" << send;
+		}
+	}
+
 
 }
 EVE_PrivateMsg_EX(Speak) {
